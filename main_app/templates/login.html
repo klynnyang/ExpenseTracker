@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title%}
+Expense Tracker - Login
+{% endblock %}
+
+{% block content %}
+
+<div class="row d-flex justify-content-center align-items-center py-5">
+    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="jumbotron text-center">
+            <form>
+                <h3 class="mb-5">LOGIN</h3>
+                <div class="form-outline mb-4">
+                    <input type="email" class="form-control form-control-lg" />
+                    <label class="form-label" >Email address</label>
+                </div>
+                <div class="form-outline mb-4">
+                    <input type="password" class="form-control form-control-lg" />
+                    <label class="form-label">Password</label>
+                </div>
+                <button class="btn btn-success btn-lg btn-block mb-4" type="submit">Login</button>
+
+                <p class="text-center fw-bold mb-4"> ------- OR ------- </p>
+
+                <button class="btn btn-lg btn-block btn-primary google" type="submit"><i class="fab fa-google me-2"></i> Continue with google</button>
+                <button class="btn btn-lg btn-block btn-primary facebook mb-4" type="submit"><i class="fab fa-facebook-f me-2"></i>Continue with facebook</button>
+
+                <p>Do not have an account? <a href="#">Sign up here</a></p>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+

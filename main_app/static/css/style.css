@@ -1,0 +1,64 @@
+.page-footer {
+    bottom: 0;
+    padding: 2px;
+    width: 100%;
+    position: fixed;
+    text-align: center;
+    background-color: #6FB3B8;
+    color: #F6F6F2
+}
+
+.navbar-default {
+    background-color: #6FB3B8;
+}
+
+.navbar-default .navbar-brand, .navbar-default .navbar-nav>li>a  {
+    color: #F6F6F2
+}
+
+a:link {
+    text-decoration: none;
+}
+
+.jumbotron {
+    color: #388087;
+    background-color: rgb(246, 246, 242, 0.8);
+}
+
+.jumbotron p {
+    font-size: 15px
+}
+
+.btn-success {
+    background-color: #6FB3B8 !important;
+    border-color: #388087 !important;
+}
+
+.btn-success:hover {
+    background-color:#388087!important;
+    border-color: #388087!important;
+}
+
+.container {
+    margin-top:30px
+}
+
+.jumbotron {
+    border-radius: 2rem;
+}
+
+.google {
+    background-color: #dd4b39;
+}
+
+.google:hover{
+    background-color: #963326;
+}
+
+.facebook {
+    background-color: #3f60a8;
+}
+
+.facebook:hover {
+    background-color: #203563;
+}
