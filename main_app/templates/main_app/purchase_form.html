@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title%}
+Expense Tracker - Login
+{% endblock %}
+
+{% block content %}
+
+<div class="row d-flex justify-content-center align-items-center">
+  <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+      <div class="jumbotron">
+          {% if object %}
+          <h1 class="mb-3">Edit purchase: {{object.date}} from {{object.retailer}}</h1>
+          {% else %}
+          <h1 class="mb-3">Add a purchase</h1>
+          {% endif %}
+          <hr class="mb-3">
+          <form action="#" method="POST" autocomplete="off">
+            {% csrf_token %}
+            {{ form|crispy }}
+            {% if object %}
+            <input type="submit" class="btn btn-lg btn-success text-center mt-3" value="Save Purchase">
+            {% else %}
+            <input type="submit" class="btn btn-lg btn-success text-center mt-3" value="Add Purchase">
+            {% endif %}
+          </form>
+      </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+      var date_input=$('input[name="date"]');
+      var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+      date_input.datepicker({
+          format: 'mm/dd/yyyy',
+          container: container,
+          todayHighlight: true,
+          autoclose: true,
+      })
+  })
+  $(":input").not(":last, :eq(3), :eq(4), :eq(5)").addClass('form-control');
+  $(":input").not(":last, :eq(1), :eq(2), :eq(6)").addClass('form-select');  
+
+</script>
+{% endblock %}

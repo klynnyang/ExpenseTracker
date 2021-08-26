@@ -27,11 +27,23 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css"
       rel="stylesheet"
     />
-
     <link
       rel="stylesheet"
       type="text/css"
       href="{% static 'css/style.css' %}"
+    />
+    <!-- for calendar with bootstrap -->
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-1.11.3.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"
     />
   </head>
   <body>
@@ -43,7 +55,9 @@
           </div>
           <ul class="nav navbar-nav"></ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="/login"><i class="fas fa-sign-in-alt"></i>&nbsp Login</a></li>
+            <li>
+              <a href="/login"><i class="fas fa-sign-in-alt"></i>&nbsp Login</a>
+            </li>
           </ul>
         </div>
       </nav>
@@ -51,7 +65,8 @@
     <main class="container">{% block content %} {% endblock %}</main>
     <footer class="page-footer">
       <div class="container-fluid">
-        <i class="fas fa-copyright"></i> 2021 Expense Tracker - All Rights Reserved
+        <i class="fas fa-copyright"></i> 2021 Expense Tracker - All Rights
+        Reserved
       </div>
     </footer>
 

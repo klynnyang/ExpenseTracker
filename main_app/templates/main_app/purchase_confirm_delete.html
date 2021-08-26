@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Delete Purchase</h1>
+
+<h5>Are you sure you want to delete the purchase dated <span class="name">{{object.date}}</span> from {{object.retailer}}?</h5>
+
+<form action="" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Yes" class="btn">
+
+    <a href="{% url 'table_detail' object.budget.id%}">Cancel</a>
+</form>
+{% endblock %}

@@ -1,4 +1,3 @@
-from django.core.mail import send_mail
 from django.urls import path
 from . import views
 
@@ -8,4 +7,9 @@ urlpatterns = [
     path('user/', views.user, name='user'),
     path('email/', views.send_email, name='email'),
     path('budget/', views.budget_index, name='budget'),
+    path('budget/<int:budget_id>/', views.budget_detail, name='detail'),
+    path('budget/<int:budget_id>/table_detail', views.table_detail, name='table_detail'),
+    path('budget/<int:budget_id>/create', views.PurchaseCreate.as_view(), name='purchase_create'),
+    path('purchase/<int:pk>/delete', views.PurchaseDelete.as_view(), name='purchase_delete'),
+    path('purchase/<int:pk>/update', views.PurchaseUpdate.as_view(), name='purchase_update'),
 ]
