@@ -1,14 +1,33 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template import loader
 from django.urls.base import reverse_lazy
-from .forms import EmailForm
+from .forms import EmailForm, MonthForm
+from django.http import JsonResponse
 from .models import *
+from django.db.models import Count, Sum, F
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Create your views here.
+def chart(request, month_id):
+  labels = []
+  data = []
+  queryset = Purchase.objects.filter(date__month=month_id).order_by('date')
+  for entry in queryset:
+    labels.append(entry.date)
+    data.append(entry.amount)
+         
+  return JsonResponse (data={
+    'labels': labels,
+    'data': data
+  })
+
+def table(request, month_id):
+  queryset = Purchase.objects.filter(date__month=month_id)
+  total = queryset.values('category__name').annotate(total=Sum('amount'))
+  total_list = list(total)
+  return JsonResponse({'data': total_list})
 
 class PurchaseCreate(CreateView):
   model = Purchase
@@ -17,7 +36,7 @@ class PurchaseCreate(CreateView):
 class PurchaseDelete(DeleteView):
   model = Purchase
   def get_success_url(self):
-    return reverse_lazy('detail', kwargs={'budget_id': self.object.budget.id})
+    return reverse_lazy('table_detail', kwargs={'budget_id': self.object.budget.id})
 
 class PurchaseUpdate(UpdateView):
   model = Purchase
@@ -63,7 +82,9 @@ def budget_index(request):
 
 def budget_detail(request, budget_id):
   budget = Budget.objects.get(id=budget_id)
-  return render(request, 'budget/detail.html', {'budget': budget})
+  month = MonthForm()
+  test=8
+  return render(request, 'budget/detail.html', {'budget': budget, 'month': month, 'test':test})
 
 def table_detail(request, budget_id):
   budget = Budget.objects.get(id=budget_id)

@@ -7,35 +7,119 @@ Expense Tracker - {{ budget.name }}
 {% block content %}
 <h1>{{ budget.name }} summary</h1>
 <div class='row'>
-    <div class='col-sm-8 py-5'>
+    <div class='col-sm-12 py-5'>
         <i class="fas fa-chart-line"></i><b>&nbsp Graph</b>
+        <form action="" method="post">
+          {% csrf_token %}
+          {{ month.as_p }}
+        </form>
+        <div id="container" style="width: 100%;">
+          <canvas id="chart" data-url="{% url 'chart' test%}"></canvas>
+        </div>
+
         <p><a href="#" class="float-right">Check History</p></a>
     </div>
-    <div class='col-sm-3 py-5'>
-        <i class="fas fa-dollar-sign"></i><b>&nbsp Monthly Expense </b>
-    </div>
-    <div class='col-sm-8 py-5'>
+    <div class='col-sm-12 py-5'>
         <i class="fas fa-table"></i><b>&nbsp Table</b>
-        <div>
-            <table class="table table-striped">
-                <thead>
-                  <tr><th>Date</th><th>Amount</th><th>Category</th><th>Retailer</th><th>Notes</th><th></th></tr>
-                </thead>
-                <tbody>
-                  {% for purchase in budget.purchase_set.all %}
-                    <tr>
-                      <td>{{purchase.date}}</td>
-                      <td>{{purchase.amount}}</td>
-                      <td>{{purchase.category}}</td>
-                      <td>{{purchase.retailer}}</td>
-                      <td>{{purchase.notes}}</td>
-                      <td><a href="{% url 'purchase_delete' purchase.id%}"><i class="fas fa-trash-alt text-center"></i></a></td>
-                    </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
+        <div id="table" data-url="{% url 'table' test%}">
+          <table class="table table-striped">
+          <thead>
+            <tr><th>Category</th><th>Amount</th></tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+          </table>
         </div>
+
         <p><a href="{% url 'table_detail' budget.id%}" class="float-right">Edit Purchase</p></a>
     </div>
 </div>
+<script>
+
+$("#id_month").change(function(){
+  let month = $('#id_month').val();
+  renderChart(month);
+  renderTable(month)
+});
+
+function renderTable(month) {
+  var $table = $("#table");
+  if (!month) {
+    var month_url = $table.data("url")
+  } else {
+    $("#table").attr("data-url", "/tables/" + month)
+    var month_url = $table.attr("data-url")
+  }
+  $.ajax({
+    url: month_url,
+    type:"GET",
+    dataType: 'json',
+    success: function(data){
+      $("#table tbody").empty()
+      data.data.forEach(function(item){
+        $("#table tbody").append(
+          '<tr><td>' + item.category__name +
+          '</td><td>' + item.total + 
+          '</td></tr>'
+        )
+      })
+    }
+  })
+}
+
+function renderChart(month) {
+  var $chart = $("#chart");
+  if (!month) {
+    var month_url = $chart.data("url")
+  } else {
+    $("#chart").attr("data-url", "/charts/" + month)
+    var month_url = $chart.attr("data-url")
+  }
+  $.ajax({
+    url: month_url,
+    success: function (data) {
+      var ctx = $chart[0].getContext("2d");
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: data.labels,
+          datasets: [{
+            label: 'Amount',
+            borderColor: '#6FB3B8',
+            backgroundColor:'rgb(111, 179, 184, 0.3)',
+            data: data.data
+          }]          
+        },
+        options: {
+          responsive: true,
+          legend: {
+            position: 'top',
+          },
+          scales: {
+            xAxes:[{
+              scaleLabel:{
+                display: true,
+                labelString:'Date'
+              }
+            }],
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString:'Amount ($)'
+              }
+            }]
+          },
+          title: {
+            display: true,
+            text: 'Spending per month'
+          }
+        }
+      });
+    }
+  });
+}
+$(renderChart())
+$(renderTable())
+</script>
 {% endblock %}
