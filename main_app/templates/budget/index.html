@@ -3,17 +3,23 @@
 Expense Tracker - Budget
 {% endblock %}
 
-
 {% block content %}
-<h1>Budget</h1>
-{% for budget in budgets %}
-<div class="list-group">
+
+<h2>{{ user|title }}'s Budget</h2>
+<div class="container">
+  {% for budget in budgets %}
+  <div class="jumbotron">
     <a href="{% url 'detail' budget.id%}">
-    <div class="list-group-item">
-      <span class="title"><h3>{{ budget.name }}</h3></span>
-    </div>
+    
+      <span class="title text-center"><h3>{{ budget.name }}</h3></span>
     </a>
+    </div>
+    {% endfor %}
+    <a href="{% url 'budget_create' %}">
+      <div class="jumbotron">
+      <span class="title text-center"><h3>Add A Budget</h3></span>
 </div>
-{% endfor %}
+
 
 {% endblock %}
+

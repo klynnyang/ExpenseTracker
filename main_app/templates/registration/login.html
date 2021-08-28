@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title%}
+Expense Tracker - Login
+{% endblock %}
+
+{% block content %}
+
+<div class="row d-flex justify-content-center align-items-center py-5">
+    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="jumbotron text-center">
+            <form method="post" action="{% url 'login' %}">
+                <h3 class="mb-5">LOGIN</h3>
+                {% csrf_token %}
+                <div class="form-outline mb-4">
+                    {{ form.username }}
+                    {{ form.username.label_tag}}
+                </div>
+                <div class="form-outline mb-4">
+                    {{ form.password }}
+                    {{ form.password.label_tag}}
+                </div>
+                <input type="submit" class="btn btn-success btn-lg btn-block mb-4" value="login">
+                <input type="hidden" name="next" value="{{ next }}">
+            </form>
+
+            <p class="text-center fw-bold mb-4"> ------- OR ------- </p>
+
+            <button class="btn btn-lg btn-block btn-primary google" type="submit"><i class="fab fa-google me-2"></i> Continue with google</button>
+            <button class="btn btn-lg btn-block btn-primary facebook mb-4" type="submit"><i class="fab fa-facebook-f me-2"></i>Continue with facebook</button>
+
+            <p>Do not have an account? <a href="{% url 'signup' %}">Sign up here</a></p>
+        </form>
+    </div>
+</div>
+</div> 
+
+<script>
+$(":input").not(":last, :eq(3), :eq(5)").addClass('form-control form-control-lg');
+$("label").addClass("form-label")
+</script>
+{% endblock %}
+
+

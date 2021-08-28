@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title%}
+Expense Tracker - Sign Up
+{% endblock %}
+
+{% block content %}
+
+{% if error_message %}<p class="red-text">{{ error_message }}</p>{% endif %}
+
+<div class="row d-flex justify-content-center align-items-center py-5">
+    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="jumbotron text-center">
+            <h3 class="mb-5">SIGN UP</h3>
+            <div class="text-left">
+            <form method="post" action="{% url 'signup' %}">
+                <div class="form-outline mb-4">
+                    {{ form.username }}
+                    {{ form.username.label_tag}}
+                </div>
+                <div class="form-outline mb-4">
+                    {{ form.first_name }}
+                    {{ form.first_name.label_tag}}
+                </div>
+                <div class="form-outline mb-4">
+                    {{ form.last_name }}
+                    {{ form.last_name.label_tag}}
+                </div>
+                <div class="form-outline mb-4">
+                    {{ form.email }}
+                    {{ form.email.label_tag}}
+                </div>
+                <div class="form-outline mb-4">
+                    {{ form.password1 }}
+                    {{ form.password1.label_tag}}
+                </div>
+                <div class="form-outline mb-4">
+                    {{ form.password2 }}
+                    {{ form.password2.label_tag}}
+                </div>
+
+            </div>
+            <input type="submit" class="btn btn-success btn-lg btn-block mt-5 mb-4" value="sign up">
+            </form>
+        </div>
+    </div>
+</div> 
+<script>
+    $(":input").not(":last").addClass('form-control form-control-lg');
+    $("label").addClass("form-label")
+</script>
+{% endblock %}
+
+

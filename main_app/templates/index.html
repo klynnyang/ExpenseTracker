@@ -8,7 +8,9 @@ Expense Tracker - Home
     <h2><b>Expense Tracker</h2></b>
     <hr>
     <p class="index-text">Platform to monitor and manage your individual or household expenses - for free!</p>
-    <button type="button" class="btn btn-success btn-lg">Sign Up Today</button>
+    <form action="{% url 'login' %}">
+      <input type="submit" value ="JOIN US TODAY" class="btn btn-success btn-lg">
+    </form>
 </div>
 <div class="jumbotron">
     <p>About us</p>
