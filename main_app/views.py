@@ -29,25 +29,26 @@ def signup(request):
   return render(request, 'registration/signup.html', context)
 
 @login_required
-def chart(request, month_id):
+def chart(request, budget_id, month_id):
   labels = []
   data = []
-  queryset = Purchase.objects.filter(date__month=month_id).order_by('date')
+  queryset = Purchase.objects.filter(budget=budget_id).filter(date__month=month_id).order_by('date')
   for entry in queryset:
     labels.append(entry.date)
     data.append(entry.amount)
          
   return JsonResponse (data={
     'labels': labels,
-    'data': data
+    'data': data,
+    'id': budget_id
   })
 
 @login_required
-def table(request, month_id):
-  queryset = Purchase.objects.filter(date__month=month_id)
+def table(request, budget_id, month_id):
+  queryset = Purchase.objects.filter(budget=budget_id).filter(date__month=month_id)
   total = queryset.values('category__name').annotate(total=Sum('amount'))
   total_list = list(total)
-  return JsonResponse({'data': total_list})
+  return JsonResponse({'data': total_list, 'id': budget_id})
 
 class BudgetCreate(LoginRequiredMixin, CreateView):
   model = Budget
