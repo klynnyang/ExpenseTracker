@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title%}
+Expense Tracker - Log Out
+{% endblock %}
+{% load socialaccount %}
+
+{% block content %}
+
+<div class="row d-flex justify-content-center align-items-center py-5">
+    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="jumbotron text-center user-form">
+            <form method="post" action="{% url 'account_logout' %}">
+                <h3 class="mb-5">SIGN OUT</h3>
+                {% csrf_token %}
+                <h5 class="mb-5">Are you sure you want to sign out?</h5>
+                <button type="submit" class="btn btn-lg btn-block btn-success">SIGN OUT</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".user-form").css({"backgroundColor": "white", "border-color":"#6FB3B8", "border-width":"2px", "border-style":"solid"})
+</script>
+
+{% endblock %}
+
+
+

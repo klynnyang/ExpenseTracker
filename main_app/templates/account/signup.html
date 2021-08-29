@@ -23,38 +23,38 @@ Expense Tracker - Sign Up
             {% else %}
             <h3 class="mb-5">SIGN UP</h3>
             <div class="text-left">
-            <form method="post" action="{% url 'signup' %}">
+            <form method="post" action="{% url 'account_signup' %}">
                 {{ form.non_field_errors }}
                 {% csrf_token %}
                 <div class="form-outline mb-4">
                     {{ form.username.errors}}
                     {{ form.username }}
-                    {{ form.username.label_tag}}
+                    <label for="{{ form.username.id_for_label }}">Username</label>{{ username }}
                 </div>
                 <div class="form-outline mb-4">
                     {{ form.first_name.errors}}
                     {{ form.first_name }}
-                    {{ form.first_name.label_tag}}
+                    <label for="{{ form.first_name.id_for_label }}">First Name</label>{{ first_name }}
                 </div>
                 <div class="form-outline mb-4">
                     {{ form.last_name.errors}}
                     {{ form.last_name }}
-                    {{ form.last_name.label_tag}}
+                    <label for="{{ form.last_name.id_for_label }}">Last Name</label>{{ last_name }}
                 </div>
                 <div class="form-outline mb-4">
                     {{ form.email.errors}}
                     {{ form.email }}
-                    {{ form.email.label_tag}}
+                    <label for="{{ form.last_name.id_for_label }}">Email Address</label>{{ email }}
                 </div>
                 <div class="form-outline mb-4">
                     {{ form.password1.errors}}
                     {{ form.password1 }}
-                    {{ form.password1.label_tag}}
+                    <label for="{{ form.password1.id_for_label }}">Password</label>{{ password1 }}
                 </div>
                 <div class="form-outline mb-6">
                     {{ form.password2.errors}}
                     {{ form.password2 }}
-                    {{ form.password2.label_tag}}
+                    <label for="{{ form.password2.id_for_label }}">Password Confirmation</label>{{ password2 }}
                 </div>
 
             </div>

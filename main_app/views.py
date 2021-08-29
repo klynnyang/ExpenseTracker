@@ -20,13 +20,13 @@ def signup(request):
     form = SignUpForm(request.POST)
     if form.is_valid():
       user = form.save()
-      auth_login(request, user)
+      auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
       return redirect('budget')
     else:
       error_message = form.errors
   form = SignUpForm()
   context = {'form': form, 'error_message': error_message}
-  return render(request, 'registration/signup.html', context)
+  return render(request, 'account/signup.html', context)
 
 @login_required
 def chart(request, budget_id, month_id):

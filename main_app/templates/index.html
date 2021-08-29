@@ -8,7 +8,7 @@ Expense Tracker - Home
     <h2><b>Expense Tracker</h2></b>
     <hr>
     <p class="index-text">Platform to monitor and manage your individual or household expenses - for free!</p>
-    <form action="{% url 'login' %}">
+    <form action="{% url 'account_login' %}">
       <input type="submit" value ="JOIN US TODAY" class="btn btn-success btn-lg">
     </form>
 </div>
@@ -39,3 +39,36 @@ Expense Tracker - Home
     {% endif %}
   </div>
 {% endblock %}
+
+
+
+<div class="form-outline mb-4">
+  {{ form.username.errors}}
+  {{ form.username }}
+  {{ form.username.label_tag}}
+</div>
+<div class="form-outline mb-4">
+  {{ form.first_name.errors}}
+  {{ form.first_name }}
+  {{ form.first_name.label_tag}}
+</div>
+<div class="form-outline mb-4">
+  {{ form.last_name.errors}}
+  {{ form.last_name }}
+  {{ form.last_name.label_tag}}
+</div>
+<div class="form-outline mb-4">
+  {{ form.email.errors}}
+  {{ form.email }}
+  {{ form.email.label_tag}}
+</div>
+<div class="form-outline mb-4">
+  {{ form.password1.errors}}
+  {{ form.password1 }}
+  {{ form.password1.label_tag}}
+</div>
+<div class="form-outline mb-6">
+  {{ form.password2.errors}}
+  {{ form.password2 }}
+  {{ form.password2.label_tag}}
+</div>

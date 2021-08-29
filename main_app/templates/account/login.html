@@ -2,6 +2,7 @@
 {% block title%}
 Expense Tracker - Login
 {% endblock %}
+{% load socialaccount %}
 
 {% block content %}
 <div class="row d-flex justify-content-center align-items-center py-5">
@@ -13,18 +14,18 @@ Expense Tracker - Login
             <form action="{% url 'budget' %}">
                 <input type="submit" value ="View my budgets" class="btn btn-success btn-lg btn-block mb-5 budget">
             </form>
-            <form action="{% url 'logout' %}">
+            <form action="{% url 'account_logout' %}">
                 <input type="submit" value ="Log Out" class="btn btn-success btn-lg btn-block mb-4">
             </form>
         {% else %}
-        <form method="post" action="{% url 'login' %}">
+        <form method="post" action="{% url 'account_login' %}">
             <h3 class="mb-5">LOGIN</h3>
             {{ form.non_field_errors }}
             {% csrf_token %}
             <div class="form-outline mb-4">
-                {{ form.username.errors}}
-                {{ form.username }}
-                <label for="{{ form.username.id_for_label }}">Username</label>{{ username }}
+                {{ form.login.errors}}
+                {{ form.login }}
+                <label for="{{ form.login.id_for_label }}">Username</label>{{ login }}
             </div>
             <div class="form-outline mb-4">
                 {{ form.password.errors}}
@@ -36,16 +37,12 @@ Expense Tracker - Login
         </form>
 
         <p class="text-center fw-bold mb-4"> ------- OR ------- </p>
-
-        <button class="btn btn-lg btn-block btn-primary google" type="submit"><i class="fab fa-google me-2"></i> Continue with google</button>
-        <button class="btn btn-lg btn-block btn-primary facebook mb-4" type="submit"><i class="fab fa-facebook-f me-2"></i>Continue with facebook</button>
+        <a href="{% provider_login_url 'google' %}" class="btn btn-lg btn-block btn-primary google "><i class="fab fa-google me-2"></i>CONTINUE WITH GOOGLE</A>
+        <a href="{% provider_login_url 'facebook' %}" class="btn btn-lg btn-block btn-primary facebook mb-3"><i class="fab fa-facebook-f me-2"></i>CONTINUE WITH FACEBOOK</A>
 
         <p>Do not have an account? <a href="{% url 'signup' %}">Sign up here</a></p>
         </form>
         {% endif %}
-    </div>
-</div>
-</div> 
 
 
 
