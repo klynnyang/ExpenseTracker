@@ -10,44 +10,65 @@ Expense Tracker - Sign Up
 
 <div class="row d-flex justify-content-center align-items-center py-5">
     <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-        <div class="jumbotron text-center">
+        <div class="jumbotron text-center user-form">
+            {% if user.is_authenticated %}
+
+            <h3 class="mb-5">You are logged in as {{ user|title }} </h3>
+            <form action="{% url 'budget' %}">
+                <input type="submit" value ="View my budgets" class="btn btn-success btn-lg btn-block mb-5 budget">
+            </form>
+            <form action="{% url 'logout' %}">
+                <input type="submit" value ="Log Out" class="btn btn-success btn-lg btn-block mb-4">
+            </form>
+            {% else %}
             <h3 class="mb-5">SIGN UP</h3>
             <div class="text-left">
             <form method="post" action="{% url 'signup' %}">
+                {{ form.non_field_errors }}
+                {% csrf_token %}
                 <div class="form-outline mb-4">
+                    {{ form.username.errors}}
                     {{ form.username }}
                     {{ form.username.label_tag}}
                 </div>
                 <div class="form-outline mb-4">
+                    {{ form.first_name.errors}}
                     {{ form.first_name }}
                     {{ form.first_name.label_tag}}
                 </div>
                 <div class="form-outline mb-4">
+                    {{ form.last_name.errors}}
                     {{ form.last_name }}
                     {{ form.last_name.label_tag}}
                 </div>
                 <div class="form-outline mb-4">
+                    {{ form.email.errors}}
                     {{ form.email }}
                     {{ form.email.label_tag}}
                 </div>
                 <div class="form-outline mb-4">
+                    {{ form.password1.errors}}
                     {{ form.password1 }}
                     {{ form.password1.label_tag}}
                 </div>
-                <div class="form-outline mb-4">
+                <div class="form-outline mb-6">
+                    {{ form.password2.errors}}
                     {{ form.password2 }}
                     {{ form.password2.label_tag}}
                 </div>
 
             </div>
-            <input type="submit" class="btn btn-success btn-lg btn-block mt-5 mb-4" value="sign up">
+            <input type="submit" class="btn btn-success btn-lg btn-block mb-4" value="sign up">
             </form>
+            {% endif %}
         </div>
     </div>
 </div> 
 <script>
-    $(":input").not(":last").addClass('form-control form-control-lg');
+    $(":input").not(":last, .budget").addClass('form-control form-control-lg');
     $("label").addClass("form-label")
+    $("li").addClass("text-danger")
+    $(".user-form").css({"backgroundColor": "white", "border-color":"#6FB3B8", "border-width":"2px", "border-style":"solid"})
 </script>
 {% endblock %}
 

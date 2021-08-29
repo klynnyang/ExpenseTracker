@@ -4,40 +4,55 @@ Expense Tracker - Login
 {% endblock %}
 
 {% block content %}
-
 <div class="row d-flex justify-content-center align-items-center py-5">
     <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-        <div class="jumbotron text-center">
-            <form method="post" action="{% url 'login' %}">
-                <h3 class="mb-5">LOGIN</h3>
-                {% csrf_token %}
-                <div class="form-outline mb-4">
-                    {{ form.username }}
-                    {{ form.username.label_tag}}
-                </div>
-                <div class="form-outline mb-4">
-                    {{ form.password }}
-                    {{ form.password.label_tag}}
-                </div>
-                <input type="submit" class="btn btn-success btn-lg btn-block mb-4" value="login">
-                <input type="hidden" name="next" value="{{ next }}">
+        <div class="jumbotron text-center user-form">
+        {% if user.is_authenticated %}
+
+            <h3 class="mb-5">You are logged in as {{ user|title }} </h3>
+            <form action="{% url 'budget' %}">
+                <input type="submit" value ="View my budgets" class="btn btn-success btn-lg btn-block mb-5 budget">
             </form>
-
-            <p class="text-center fw-bold mb-4"> ------- OR ------- </p>
-
-            <button class="btn btn-lg btn-block btn-primary google" type="submit"><i class="fab fa-google me-2"></i> Continue with google</button>
-            <button class="btn btn-lg btn-block btn-primary facebook mb-4" type="submit"><i class="fab fa-facebook-f me-2"></i>Continue with facebook</button>
-
-            <p>Do not have an account? <a href="{% url 'signup' %}">Sign up here</a></p>
+            <form action="{% url 'logout' %}">
+                <input type="submit" value ="Log Out" class="btn btn-success btn-lg btn-block mb-4">
+            </form>
+        {% else %}
+        <form method="post" action="{% url 'login' %}">
+            <h3 class="mb-5">LOGIN</h3>
+            {{ form.non_field_errors }}
+            {% csrf_token %}
+            <div class="form-outline mb-4">
+                {{ form.username.errors}}
+                {{ form.username }}
+                <label for="{{ form.username.id_for_label }}">Username</label>{{ username }}
+            </div>
+            <div class="form-outline mb-4">
+                {{ form.password.errors}}
+                {{ form.password }}
+                <label for="{{ form.password.id_for_label }}">Password</label>{{ password }}
+            </div>
+            <input type="submit" class="btn btn-success btn-lg btn-block mb-4" value="login">
+            <input type="hidden" name="next" value="{{ next }}">
         </form>
+
+        <p class="text-center fw-bold mb-4"> ------- OR ------- </p>
+
+        <button class="btn btn-lg btn-block btn-primary google" type="submit"><i class="fab fa-google me-2"></i> Continue with google</button>
+        <button class="btn btn-lg btn-block btn-primary facebook mb-4" type="submit"><i class="fab fa-facebook-f me-2"></i>Continue with facebook</button>
+
+        <p>Do not have an account? <a href="{% url 'signup' %}">Sign up here</a></p>
+        </form>
+        {% endif %}
     </div>
 </div>
 </div> 
 
+
+
 <script>
-$(":input").not(":last, :eq(3), :eq(5)").addClass('form-control form-control-lg');
+$(":input").not(":last, :eq(3), :eq(5), .budget").addClass('form-control form-control-lg');
 $("label").addClass("form-label")
+$(".user-form").css({"backgroundColor": "white", "border-color":"#6FB3B8", "border-width":"2px", "border-style":"solid"})
 </script>
 {% endblock %}
-
 
