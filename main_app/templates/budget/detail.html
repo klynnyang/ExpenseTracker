@@ -9,35 +9,39 @@ Expense Tracker - {{ budget.name }}
 <form action="{% url 'budget' %}" >
   <input type="submit" class="btn btn-success mt-3" value="< Back to Budgets" />
 </form>
+
 <div class='container'>
-    <div class='col-sm-12'>
-        <i class="fas fa-chart-line"></i><b>&nbsp Graph</b>
-        <form action="" method="post">
-          {% csrf_token %}
-          {{ month.as_p }}
-        </form>
-        <div id="container" style="width: 100%;">
-          <canvas id="chart" data-url="{% url 'chart' budget.id test%}"></canvas>
-        </div>
+  <div class='detail col-sm-12 py-2'>
 
-        <p><a href="#" class="float-right">Check History</p></a>
+      <form action="" method="post">
+        {% csrf_token %}
+        {{ month.as_p }}
+      </form>
+<div class="row">
+  <div class='col-sm-6 mt-2'>
+    <i class="fas fa-chart-pie"></i><b>&nbsp Pie Chart</b>
+    <canvas id="pie-chart" data-url="{% url 'table' budget.id test%}"></canvas>
+
+  </div>
+  <div class='col-sm-6 mt-2'>
+    <i class="fas fa-table"></i><b>&nbsp Table Summary</b>
+    <div id="table" data-url="{% url 'table' budget.id test%}">
+      <table class="table table-striped">
+      <thead>
+        <tr><th>Category</th><th>Amount</th></tr>
+      </thead>
+        <tbody></tbody>
+      </table>
     </div>
-    <div class='col-sm-12 py-5'>
-        <i class="fas fa-table"></i><b>&nbsp Table</b>
-        <div id="table" data-url="{% url 'table' budget.id test%}">
-          <table class="table table-striped">
-          <thead>
-            <tr><th>Category</th><th>Amount</th></tr>
-          </thead>
-          <tbody>
+    <p><a href="{% url 'table_detail' budget.id%}" class="float-right">Edit Purchase History</p></a>
+  </div>
 
-          </tbody>
-          </table>
-        </div>
-
-        <p><a href="{% url 'table_detail' budget.id%}" class="float-right">Edit Purchase History</p></a>
+  <div class='col-sm-12 py-5'>
+    <i class="fas fa-chart-line"></i><b>&nbsp Graph</b>
+    <div id="container" style="width: 100%;">
+      <canvas id="chart" data-url="{% url 'chart' budget.id test%}"></canvas>
     </div>
-</div>
+  </div>
 <script>
 
 $("#id_month").change(function(){
@@ -48,7 +52,7 @@ $("#id_month").change(function(){
 
 function renderTable(month) {
   var $table = $("#table");
-
+  var $pieChart = $("#pie-chart")
   if (!month) {
     var month_url = $table.data("url")
   } else {
@@ -67,6 +71,28 @@ function renderTable(month) {
           '</td><td>' + item.total + 
           '</td></tr>' 
         )
+      })
+      let ctx = $pieChart[0].getContext("2d");
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: data.labels,
+          datasets: [{
+            data: data.chart,
+            backgroundColor: [
+            '#809bce', '#95b8d1', '#6FB3B8', '#d6eadf', '#eac4d5'
+            ],
+            label: 'Total'
+          }]
+        },
+        options: {
+          responsive: true,
+          legend:{
+            display: true,
+            position: 'bottom'
+          }
+        }
+
       })
     }
   })
@@ -123,6 +149,7 @@ function renderChart(month) {
     }
   });
 }
+$(".detail").css({"padding-left": 0, "padding-right": 0})
 $(renderChart())
 $(renderTable())
 </script>

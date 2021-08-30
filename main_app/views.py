@@ -45,10 +45,20 @@ def chart(request, budget_id, month_id):
 
 @login_required
 def table(request, budget_id, month_id):
+  labels = []
+  chart_data = []
   queryset = Purchase.objects.filter(budget=budget_id).filter(date__month=month_id)
   total = queryset.values('category__name').annotate(total=Sum('amount'))
   total_list = list(total)
-  return JsonResponse({'data': total_list, 'id': budget_id})
+  for entry in total:
+    labels.append(entry["category__name"])
+    chart_data.append(entry["total"])
+  return JsonResponse(data={
+    'data': total_list, 
+    'id': budget_id,
+    'labels': labels,
+    'chart': chart_data
+  })
 
 class BudgetCreate(LoginRequiredMixin, CreateView):
   model = Budget
