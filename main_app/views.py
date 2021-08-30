@@ -3,7 +3,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.template import loader
 from django.urls.base import reverse_lazy
-from .forms import EmailForm, MonthForm, SignUpForm
+from .forms import EmailForm, MonthForm, PurchaseForm, SignUpForm
 from django.http import JsonResponse
 from .models import *
 from django.db.models import Count, Sum, F
@@ -11,6 +11,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from datetime import datetime
 
 # Create your views here.
 
@@ -68,18 +69,24 @@ class BudgetCreate(LoginRequiredMixin, CreateView):
     form.instance.user = self.request.user
     return super().form_valid(form)
 
-class PurchaseCreate(LoginRequiredMixin, CreateView):
+class PassRequestToFormView:
+  def get_form_kwargs(self):
+    kwargs = super().get_form_kwargs()
+    kwargs['request'] = self.request
+    return kwargs
+
+class PurchaseCreate(LoginRequiredMixin, PassRequestToFormView, CreateView):
+  form_class = PurchaseForm
   model = Purchase
-  fields = '__all__'
+
+class PurchaseUpdate(LoginRequiredMixin, PassRequestToFormView, UpdateView):
+  model = Purchase
+  form_class = PurchaseForm
 
 class PurchaseDelete(LoginRequiredMixin, DeleteView):
   model = Purchase
   def get_success_url(self):
     return reverse_lazy('table_detail', kwargs={'budget_id': self.object.budget.id})
-
-class PurchaseUpdate(LoginRequiredMixin, UpdateView):
-  model = Purchase
-  fields = '__all__'
 
 def home(request):
   form = EmailForm()
@@ -124,9 +131,13 @@ def budget_index(request):
 @login_required
 def budget_detail(request, budget_id):
   budget = Budget.objects.get(id=budget_id)
-  month = MonthForm()
-  test=8
-  return render(request, 'budget/detail.html', {'budget': budget, 'month': month, 'test':test})
+  if budget.user.id != request.user.id:
+    budgets = Budget.objects.filter(user=request.user)
+    return render(request, 'budget/index.html', {'budgets': budgets})
+  else:
+    month = MonthForm()
+    test=datetime.now().month
+    return render(request, 'budget/detail.html', {'budget': budget, 'month': month, 'test':test})
 
 @login_required
 def table_detail(request, budget_id):

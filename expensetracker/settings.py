@@ -12,22 +12,23 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import environ
+environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-96=3-^t4jt(j3=a&-&lnik2j2@c%htki_6_)rta87qxyxt7qs+'
+SECRET_KEY = os.environ['SECRET_KEY_TWO']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -53,7 +54,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend'
 ]
 
-# ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https' (required for secure facebook login/interference with google)
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 
 SOCIALACCOUNT_PROVIDERS = {
     'facebook': {
@@ -170,13 +171,12 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'expensetrackerGA@gmail.com'
-EMAIL_HOST_PASSWORD = 'GA2021Email'
+EMAIL_HOST_PASSWORD = os.environ['SECRET_KEY']
 
 SITE_ID = 3
 LOGIN_REDIRECT_URL = '/budget/'
