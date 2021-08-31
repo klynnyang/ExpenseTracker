@@ -12,11 +12,34 @@ Expense Tracker - {{ budget.name }}
 
 <div class='container'>
   <div class='detail col-sm-12 py-2'>
+    <form action="" method="post">
+      {% csrf_token %}
+      {{ month.as_p }}
+    </form>
+    <div>
+      Budget user: 
+      {% for user in budget.user.all%}
+      {{user}}
+      {% endfor %}
+    </div>
+    <div>
+      Add a shared user:
 
-      <form action="" method="post">
+    {% for user in users %}
+    {{user}}
+    {% endfor %}
+
+     {% for user in not_shared_users.all %}
+      {{user}}
+      <form action="{% url 'add_user_to_budget' budget.id user.id %}" method="POST">
         {% csrf_token %}
-        {{ month.as_p }}
+        <button type="submit" class="btn">Add</button>
       </form>
+    {% endfor %}
+    </div>
+  </div>
+</div>
+
 <div class="row">
   <div class='col-sm-6 mt-2'>
     <i class="fas fa-chart-pie"></i><b>&nbsp Pie Chart</b>
@@ -149,7 +172,6 @@ function renderChart(month) {
     }
   });
 }
-$(".detail").css({"padding-left": 0, "padding-right": 0})
 $(renderChart())
 $(renderTable())
 </script>

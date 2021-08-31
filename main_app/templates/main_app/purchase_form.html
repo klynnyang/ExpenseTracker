@@ -39,10 +39,10 @@ Expense Tracker - Login
           autoclose: true,
       })
   })
-  $(":input").not(":last, :eq(3), :eq(4), :eq(5)").addClass('form-control');
-  $(":input").not(":last, :eq(1), :eq(2), :eq(5), :eq(6)").addClass('form-select');
-  $('#id_retailer').replaceWith('<datalist>' + $('#id_retailer').html() +'</datalist>')
-  $("datalist").attr('id', "id_retailer")
-  $('#id_retailer').wrap('<input list="id_retailer" name="retailer" class="form-control"></input>')
+  $(":input").not(":last, :eq(1), :eq(4), :eq(5), :eq(6)").addClass('form-control');
+  $(":input").not(":last, :eq(2), :eq(3), :eq(7)").addClass('form-select');
+  // $('#id_retailer').replaceWith('<datalist>' + $('#id_retailer').html() +'</datalist>')
+  // $("datalist").attr('id', "id_retailer")
+  // $('#id_retailer').wrap('<input list="id_retailer" name="retailer" class="form-control"></input>')
 </script>
 {% endblock %}

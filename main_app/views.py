@@ -3,7 +3,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.template import loader
 from django.urls.base import reverse_lazy
-from .forms import EmailForm, MonthForm, PurchaseForm, SignUpForm
+from .forms import EmailForm, MonthForm, BudgetForm, PurchaseForm, SignUpForm, UserBudgetForm
 from django.http import JsonResponse
 from .models import *
 from django.db.models import Count, Sum, F
@@ -28,6 +28,44 @@ def signup(request):
   form = SignUpForm()
   context = {'form': form, 'error_message': error_message}
   return render(request, 'account/signup.html', context)
+
+@login_required
+def budget_create(request):
+  form = BudgetForm()
+  return render(request, 'main_app/budget_form.html', {
+    'form': form
+  })
+
+@login_required
+def budget_submit(request):
+  form = BudgetForm(request.POST)
+  if form.is_valid():
+    new_budget = form.save()
+    new_budget.user.add(request.user.id)
+    new_budget.save()
+  return redirect('budget')
+
+# class BudgetCreate(LoginRequiredMixin, CreateView):
+#   model = Budget
+#   fields = ['name']
+#   success_url = '/budget/'
+#   def form_valid(self, form):
+#     form.instance.user.set(self.request.user)
+#     return super().form_valid(form)
+
+@login_required
+def add_budget(request, budget_id, user_id):
+  Budget.objects.get(id=budget_id).user.add(user_id)
+  return redirect('/budget/')
+
+# def purchaseCreate(request):
+#   error_message = ''
+#   if request.method == 'POST':
+
+
+
+#     form = PurchaseForm(request.POST)
+#     if form.is_valid():
 
 @login_required
 def chart(request, budget_id, month_id):
@@ -60,14 +98,6 @@ def table(request, budget_id, month_id):
     'labels': labels,
     'chart': chart_data
   })
-
-class BudgetCreate(LoginRequiredMixin, CreateView):
-  model = Budget
-  fields = ['name']
-  success_url = '/budget/'
-  def form_valid(self, form):
-    form.instance.user = self.request.user
-    return super().form_valid(form)
 
 class PassRequestToFormView:
   def get_form_kwargs(self):
@@ -131,13 +161,15 @@ def budget_index(request):
 @login_required
 def budget_detail(request, budget_id):
   budget = Budget.objects.get(id=budget_id)
-  if budget.user.id != request.user.id:
+  if request.user not in budget.user.all():
     budgets = Budget.objects.filter(user=request.user)
     return render(request, 'budget/index.html', {'budgets': budgets})
   else:
     month = MonthForm()
+    users = UserBudgetForm()
+    not_shared_users = User.objects.exclude(id__in = budget.user.all().values_list('id'))
     test=datetime.now().month
-    return render(request, 'budget/detail.html', {'budget': budget, 'month': month, 'test':test})
+    return render(request, 'budget/detail.html', {'users': users, 'not_shared_users': not_shared_users, 'budget': budget, 'month': month, 'test':test})
 
 @login_required
 def table_detail(request, budget_id):

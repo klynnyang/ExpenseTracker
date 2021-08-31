@@ -10,7 +10,7 @@ Expense Tracker - New Budget
 <div class="col-12 col-md-8 col-lg-6 col-xl-5">
         <h1 class="mb-3">Add a Budget</h1>
         <hr class="mb-3">
-        <form action="#" method="POST" autocomplete="off">
+        <form action="{% url 'budget_submit'%}" method="POST" autocomplete="off">
             {% csrf_token %}
             {{ form|crispy }}
         <input type="submit" class="btn btn-lg btn-success text-center mt-3" value="Add Budget">

@@ -69,3 +69,9 @@ a:link {
     justify-content: space-between;
 }
 
+.detail {
+    padding-left: 0;
+    padding-right: 0;
+    display: flex;
+    justify-content: space-between;
+}

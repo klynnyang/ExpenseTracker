@@ -27,7 +27,7 @@ class Month(models.Model):
 class Budget(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ManyToManyField(User)
     
     def __str__(self):
         return self.name
@@ -48,6 +48,7 @@ class Retailer(models.Model):
 
 class Purchase(models.Model):
     id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User,default = 1,  on_delete=models.CASCADE)
     date = models.DateField('Date of purchase')
     amount = models.DecimalField(max_digits=6, decimal_places=2, validators=[MinValueValidator(0.01)])
     budget = models.ForeignKey(Budget, default=1, on_delete=models.CASCADE)
