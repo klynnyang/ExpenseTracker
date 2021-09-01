@@ -1,14 +1,23 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<h1>Delete Purchase</h1>
-
-<h5>Are you sure you want to delete the purchase dated <span class="name">{{object.date}}</span> from {{object.retailer}}?</h5>
-
-<form action="" method="post">
-    {% csrf_token %}
-    <input type="submit" value="Yes" class="btn">
-
-    <a href="{% url 'table_detail' object.budget.id%}">Cancel</a>
-</form>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Delete Purchase</h1>
+        
+        <h5>Are you sure you want to delete the purchase dated <span class="name">{{object.date}}</span> from {{object.retailer}}?</h5>
+        
+        <form action="" method="post">
+            {% csrf_token %}
+            <hr>
+            <p><input type="submit" value="Yes" class="btn btn-success">
+            <p><a href="{% url 'table_detail' object.budget.id%}" class="btn btn-success">No</a>
+        </form>
+        </div>              
+</body>
+</html>

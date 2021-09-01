@@ -1,17 +1,20 @@
+from .models import *
 from django.shortcuts import render
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template import loader
 from django.urls.base import reverse_lazy
-from .forms import EmailForm, MonthForm, BudgetForm, PurchaseForm, SignUpForm, UserBudgetForm
+from .forms import EmailForm, MonthForm, BudgetForm, PurchaseForm, SignUpForm
 from django.http import JsonResponse
-from .models import *
 from django.db.models import Count, Sum, F
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime
+from bootstrap_modal_forms.generic import BSModalCreateView
+
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -31,10 +34,20 @@ def signup(request):
 
 @login_required
 def budget_create(request):
-  form = BudgetForm()
-  return render(request, 'main_app/budget_form.html', {
-    'form': form
-  })
+  print(request.is_ajax())
+  if request.method == 'GET':
+    form = BudgetForm()
+    return render(request, 'main_app/budget_form.html', {
+      'form': form
+    })
+  if request.method == 'POST':
+    if not request.is_ajax():
+      form = BudgetForm(request.POST)
+      if form.is_valid():
+        new_budget = form.save()
+        new_budget.user.add(request.user.id)
+        new_budget.save()
+    return redirect('budget')
 
 @login_required
 def budget_submit(request):
@@ -45,9 +58,9 @@ def budget_submit(request):
     new_budget.save()
   return redirect('budget')
 
-# class BudgetCreate(LoginRequiredMixin, CreateView):
-#   model = Budget
-#   fields = ['name']
+# class BudgetCreate(LoginRequiredMixin, BSModalCreateView):
+#   template_name ='main_app/budget_form.html'
+#   form_class = BudgetForm
 #   success_url = '/budget/'
 #   def form_valid(self, form):
 #     form.instance.user.set(self.request.user)
@@ -114,6 +127,7 @@ class PurchaseUpdate(LoginRequiredMixin, PassRequestToFormView, UpdateView):
   form_class = PurchaseForm
 
 class PurchaseDelete(LoginRequiredMixin, DeleteView):
+  template_name = "main_app/purchase_confirm_delete.html"
   model = Purchase
   def get_success_url(self):
     return reverse_lazy('table_detail', kwargs={'budget_id': self.object.budget.id})
@@ -166,10 +180,9 @@ def budget_detail(request, budget_id):
     return render(request, 'budget/index.html', {'budgets': budgets})
   else:
     month = MonthForm()
-    users = UserBudgetForm()
     not_shared_users = User.objects.exclude(id__in = budget.user.all().values_list('id'))
     test=datetime.now().month
-    return render(request, 'budget/detail.html', {'users': users, 'not_shared_users': not_shared_users, 'budget': budget, 'month': month, 'test':test})
+    return render(request, 'budget/detail.html', { 'not_shared_users': not_shared_users, 'budget': budget, 'month': month, 'test':test})
 
 @login_required
 def table_detail(request, budget_id):

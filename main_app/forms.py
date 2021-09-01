@@ -4,13 +4,11 @@ from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django.contrib.auth import get_user_model
+
+from bootstrap_modal_forms.forms import BSModalModelForm
 
 class EmailForm(forms.Form):
     recipient = forms.EmailField()
-
-class UserBudgetForm(forms.Form):
-    user = User.objects.all()
 
 class MonthForm(ModelForm):
     class Meta:
@@ -42,6 +40,8 @@ class PurchaseForm(ModelForm):
         super(PurchaseForm, self).__init__(*args, **kwargs)
         self.fields['budget'].queryset = Budget.objects.filter(user=self.request.user)
         self.fields['user'].queryset = User.objects.filter(username=self.request.user)
+    
+        
     # def clean(self):
     #     if not super(PurchaseForm, self).is_valid():
     #         pprint.pprint(vars(self))

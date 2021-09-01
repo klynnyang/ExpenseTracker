@@ -13,13 +13,26 @@ Expense Tracker - Budget
     
       <span class="title text-center"><h3>{{ budget.name }}</h3></span>
     </a>
-    </div>
+  </div>
     {% endfor %}
-    <a href="{% url 'budget_create' %}">
-      <div class="jumbotron">
-      <span class="title text-center"><h3><i class="fas fa-plus"></i>&nbsp; Add Budget</h3></span>
-</div>
+    
+    <div class="jumbotron">
+    <a href="#"><span class="title text-center" id="create-budget"><h3><i class="fas fa-plus"></i>&nbsp; Add a Budget</h3></span></a>
+    </div>
+    <div class="modal fade" id="create-modal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+      </div>
+    </div>
 
-
+    <script type="text/javascript">
+      $(document).ready(function() {      
+          $("#create-budget").modalForm({
+              formURL: "{% url 'budget_create' %}",
+              modalID:"#create-modal"
+          });      
+      });
+      </script>
 {% endblock %}
 

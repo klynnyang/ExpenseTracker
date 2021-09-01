@@ -12,6 +12,13 @@ Expense Tracker - Purchase History
       <form action="{% url 'purchase_create' budget.id%}">
           <input type="submit" class="btn btn-success" value="Add a purchase" />
       </form>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content"></div>
+    </div>
+    </div>
+
   </div>
       <table class="table table-striped">
           <thead>
@@ -26,11 +33,21 @@ Expense Tracker - Purchase History
                   <td>{{purchase.category}}</td>
                   <td>{{purchase.retailer}}</td>
                   <td>{{purchase.notes}}</td>
-                  <td><a href="{% url 'purchase_delete' purchase.id%}"><i class="fas fa-trash-alt"></i></a></td>
+                  <td><a href="#" class="delete-purchase" data-form-url = "{% url 'purchase_delete' purchase.id %}" ><i class="fas fa-trash-alt"></i></a></td>
                   <td><a href="{% url 'purchase_update' purchase.id%}"><i class="fas fa-edit"></i></a></td>
               </tr>
               {% endfor %}
           </tbody>
       </table>
+      
+
+    <script type="text/javascript">
+    $(function () {
+    $(".delete-purchase").each(function () {
+        $(this).modalForm({formURL: $(this).data("form-url"), isDeleteForm: true});
+    });
+    });
+
+    </script>
 
 {% endblock %}

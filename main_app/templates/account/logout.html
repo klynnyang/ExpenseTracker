@@ -13,7 +13,7 @@ Expense Tracker - Log Out
                 <h3 class="mb-5">SIGN OUT</h3>
                 {% csrf_token %}
                 <h5 class="mb-5">Are you sure you want to sign out?</h5>
-                <button type="submit" class="btn btn-lg btn-block btn-success">SIGN OUT</button>
+                <button type="submit" class="btn btn-success btn-lg btn-block">SIGN OUT</button>
             </form>
         </div>
     </div>
@@ -21,6 +21,7 @@ Expense Tracker - Log Out
 
 <script>
     $(".user-form").css({"backgroundColor": "white", "border-color":"#6FB3B8", "border-width":"2px", "border-style":"solid"})
+    $("button").css({height: '40px'})
 </script>
 
 {% endblock %}

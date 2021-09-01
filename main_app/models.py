@@ -1,9 +1,11 @@
 from django.db import models
+from django.db.models.fields import UUIDField
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.core.validators import MinValueValidator
 from datetime import datetime
 from django.contrib.auth.models import User
+import uuid
 # Create your models here.
 
 MONTH_CHOICES = (
@@ -28,7 +30,8 @@ class Budget(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     user = models.ManyToManyField(User)
-    
+    shared_url = models.CharField(max_length=100, unique=True, default=uuid.uuid1)
+
     def __str__(self):
         return self.name
 
