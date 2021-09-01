@@ -9,6 +9,12 @@ Expense Tracker - Purchase History
       <form action="{% url 'detail' budget.id%}" >
           <input type="submit" class="btn btn-success" value="< Back to Dashboard" />
       </form>
+
+      <form action="" method="post">
+        {% csrf_token %}
+        {{ month.as_p }}
+      </form>
+
       <form action="{% url 'purchase_create' budget.id%}">
           <input type="submit" class="btn btn-success" value="Add a purchase" />
       </form>
@@ -20,34 +26,61 @@ Expense Tracker - Purchase History
     </div>
 
   </div>
-      <table class="table table-striped">
-          <thead>
-              <tr><th>User</th><th>Date</th><th>Amount</th><th>Category</th><th>Retailer</th><th>Notes</th><th></th><th></th></tr>
-          </thead>
-          <tbody>
-              {% for purchase in budget.purchase_set.all %}
-              <tr>
-                  <td>{{purchase.user|title}}</td>
-                  <td>{{purchase.date}}</td>
-                  <td>{{purchase.amount}}</td>
-                  <td>{{purchase.category}}</td>
-                  <td>{{purchase.retailer}}</td>
-                  <td>{{purchase.notes}}</td>
-                  <td><a href="#" class="delete-purchase" data-form-url = "{% url 'purchase_delete' purchase.id %}" ><i class="fas fa-trash-alt"></i></a></td>
-                  <td><a href="{% url 'purchase_update' purchase.id%}"><i class="fas fa-edit"></i></a></td>
-              </tr>
-              {% endfor %}
-          </tbody>
+    <div id="table-detail" data-url="{% url 'table_detail_month' budget.id test%}">
+        <table class="table table-hover">
+            <thead>
+                <tr><th>User</th><th>Date</th><th>Amount</th><th>Category</th><th>Retailer</th><th>Notes</th><th></th><th></th></tr>
+            </thead>
+            <tbody></tbody>
       </table>
-      
-
+    </div>
     <script type="text/javascript">
-    $(function () {
-    $(".delete-purchase").each(function () {
-        $(this).modalForm({formURL: $(this).data("form-url"), isDeleteForm: true});
-    });
+
+    $("#id_month").change(function(){
+        let month = $('#id_month').val();
+        renderTable(month)
     });
 
+    function renderTable(month){
+        var $table = $("#table-detail");
+        if (!month) {
+            var month_url = $table.data("url")
+        } else {
+            $("#table-detail").attr("data-url", $table.data("url").slice(0, $table.data("url").lastIndexOf('/') + 1) + month)
+            var month_url = $table.attr("data-url")
+        }
+        $.ajax({
+            url: month_url,
+            type:"GET",
+            dataType: 'json',
+            success: function(data){
+                $("#table-detail tbody").empty()
+                data.data.forEach(function(purchase){
+                    $("#table-detail tbody").append(
+                    '<tr><td>' + purchase.username + 
+                    '</td><td>' + purchase.date +
+                    '</td><td>' + purchase.amount +
+                    '</td><td>' + purchase.categoryname +
+                    '</td><td>' + purchase.retailername +
+                    '</td><td>' + purchase.notes +
+                    '</td><td>' + '<a href="#" class="delete-purchase" data-form-url = "/purchase/'+ purchase.id +'/delete" ><i class="fas fa-trash-alt"></i></a>' +
+                    '</td><td>' + '<a href="/purchase/' + purchase.id + '/update"><i class="fas fa-edit"></i></a>' +
+                    '</td><tr>'
+                    )
+                })
+                $(function () {
+                $(".delete-purchase").each(function () {
+                    $(this).modalForm({formURL: $(this).data("form-url"), isDeleteForm: true});
+                });
+            });
+            }            
+        })
+    }
+
+    $(renderTable())
+    $('#id_month').addClass('form-select')
+    $('label').remove()
+    
     </script>
 
 {% endblock %}

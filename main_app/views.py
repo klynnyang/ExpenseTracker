@@ -112,6 +112,19 @@ def table(request, budget_id, month_id):
     'chart': chart_data
   })
 
+@login_required
+def table_detail_month(request, budget_id, month_id):
+  queryset = Purchase.objects.filter(budget=budget_id).filter(date__month=month_id)
+  new_query = list(queryset.values(
+    'id','amount','date', 'notes',
+    username = F("user__username"),
+    categoryname = F("category__name"),
+    retailername = F("retailer__name"),
+   ))
+  return JsonResponse(data={
+    'data': new_query,
+  })
+
 class PassRequestToFormView:
   def get_form_kwargs(self):
     kwargs = super().get_form_kwargs()
@@ -186,6 +199,9 @@ def budget_detail(request, budget_id):
 
 @login_required
 def table_detail(request, budget_id):
+  month = MonthForm()
+  test = datetime.now().month
   budget = Budget.objects.get(id=budget_id)
-  return render(request, 'budget/table_detail.html', {'budget': budget})
+  data = Purchase.objects.filter(budget=budget_id).filter(date__month=datetime.now().month)
+  return render(request, 'budget/table_detail.html', {'budget': budget, 'data': data, 'month':month, 'test':test})
 

@@ -6,9 +6,16 @@ Expense Tracker - {{ budget.name }}
 
 {% block content %}
 <h2>{{ user|title }}'s {{ budget.name }} Budget</h2>
-<form action="{% url 'budget' %}" >
-  <input type="submit" class="btn btn-success mt-3" value="< Back to Budgets" />
-</form>
+<div class="detail">
+  <form action="{% url 'budget' %}" >
+    <input type="submit" class="btn btn-success mt-3" value="< Back to Budgets" />
+  </form>
+
+  <form action="#" >
+    <input type="submit" class="btn btn-success mt-3" value="Share the Budget" />
+  </form>
+</div>
+
 
 <div class='container'>
   <div class='detail col-sm-12 py-2'>
@@ -21,10 +28,6 @@ Expense Tracker - {{ budget.name }}
       {% for user in budget.user.all%}
       {{user}}
       {% endfor %}
-    </div>
-    <div>
-      Add a shared user:
-
     </div>
   </div>
 </div>
@@ -165,5 +168,7 @@ function renderChart(month) {
 }
 $(renderChart())
 $(renderTable())
+$('#id_month').addClass('form-select')
+$('label').remove()
 </script>
 {% endblock %}
