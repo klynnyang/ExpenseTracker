@@ -5,21 +5,26 @@ Expense Tracker - {{ budget.name }}
 {% endblock %}
 
 {% block content %}
+<!-- Title -->
 <h2>{{ user|title }}'s {{ budget.name }} Budget</h2>
+
+<!-- Controls -->
 <div class="detail">
   <form action="{% url 'budget' %}" >
     <input type="submit" class="btn btn-success mt-3" value="< Back to Budgets" />
   </form>
 
-  <button id="share" class="btn btn-success mt-3" type="button" >Share the Budget</button>
+  <button id="share" class="btn btn-success mt-3" type="button" >Invite User</button>
 </div>
 
+<!-- Modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content"></div>
   </div>
 </div>
 
+<!-- USER LIST -->
 <div class='container'>
   <div class='detail col-sm-12 py-2'>
     <form action="" method="post">
@@ -27,22 +32,28 @@ Expense Tracker - {{ budget.name }}
       {{ month.as_p }}
     </form>
     <div>
-      Budget user: 
+      <h5>Users:</h5> 
       {% for user in budget.user.all%}
-      {{user}}
+      <div>{{user}}</div>
       {% endfor %}
     </div>
   </div>
 </div>
 
+<!-- PIE CHART -->
 <div class="row">
   <div class='col-sm-6 mt-2 chart-canvas'>
     <i class="fas fa-chart-pie"></i><b>&nbsp Pie Chart</b>
     <canvas id="pie-chart" data-url="{% url 'table' budget.id test%}"></canvas>
 
   </div>
+  
+<!-- PURCHASE SUMMARY -->
   <div class='col-sm-6 mt-2'>
-    <i class="fas fa-table"></i><b>&nbsp Table Summary</b>
+    <div id="summary-title">
+      <span><i class="fas fa-table"></i><b>&nbsp Purchase Summary</b></span>
+      <a href="{% url 'table_detail' budget.id%}"><button class="float-right btn btn-success mt-3">Edit Purchases</button></a>
+    </div>
     <div id="table" data-url="{% url 'table' budget.id test%}">
       <table class="table table-striped">
       <thead>
@@ -51,9 +62,9 @@ Expense Tracker - {{ budget.name }}
         <tbody></tbody>
       </table>
     </div>
-    <p><a href="{% url 'table_detail' budget.id%}" class="float-right">Edit Purchase History</p></a>
   </div>
 
+  <!-- GRAPH -->
   <div class='col-sm-12 py-5'>
     <i class="fas fa-chart-line"></i><b>&nbsp Graph</b>
     <div id="container" style="width: 100%;">

@@ -76,3 +76,9 @@ a:link {
     display: flex;
     justify-content: space-between;
 }
+
+#summary-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

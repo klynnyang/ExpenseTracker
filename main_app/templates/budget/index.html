@@ -13,9 +13,9 @@ Expense Tracker - Budget
 
       <span class="title text-center"><h3>{{ budget.name }}</h3></span>
       <div class="text-center">
-        Budget user:  
+        <h5>Budget Users:</h5>  
         {% for user in budget.user.all%}
-        {{user}}
+        <div>{{user}}</div>
         {% endfor %}
       </div>
     </a>

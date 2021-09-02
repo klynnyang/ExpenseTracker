@@ -54,6 +54,7 @@
 
   </head>
   <body>
+    <!-- TITLE AND NAVIGATION -->
     <header>
       <nav class="navbar navbar-default border-0">
         <div class="container-fluid">
@@ -64,7 +65,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li>
               {% if user.is_authenticated %}
-              <a href="{% url 'budget' %}"><i class="fas fa-search-dollar"></i> View Budget</a>  &nbsp;  &nbsp;
+              <a href="{% url 'budget' %}"><i class="fas fa-search-dollar"></i> My Budgets</a>  &nbsp;  &nbsp;
               <a href="{% url 'account_logout' %}"><i class="fas fa-sign-out-alt"></i> Log Out</a>
               {% else %}
               <a href="{% url 'account_login' %}"><i class="fas fa-sign-in-alt"></i>&nbsp Login</a>
@@ -75,10 +76,13 @@
       </nav>
     </header>
 
+    <!-- CONTENT -->
     <main class="container">
       {% block content %}
        {% endblock %} 
     </main>
+    
+    <!-- FOOTER -->
     <footer class="page-footer font-small">
       <div class="container-fluid">
         <i class="fas fa-copyright"></i> 2021 Expense Tracker - All Rights
