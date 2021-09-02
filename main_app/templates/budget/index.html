@@ -10,8 +10,14 @@ Expense Tracker - Budget
   {% for budget in budgets %}
   <div class="jumbotron">
     <a href="{% url 'detail' budget.id%}">
-    
+
       <span class="title text-center"><h3>{{ budget.name }}</h3></span>
+      <div class="text-center">
+        Budget user:  
+        {% for user in budget.user.all%}
+        {{user}}
+        {% endfor %}
+      </div>
     </a>
   </div>
     {% endfor %}

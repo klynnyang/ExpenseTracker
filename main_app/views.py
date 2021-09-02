@@ -35,7 +35,6 @@ def signup(request):
 
 @login_required
 def budget_create(request):
-  print(request.is_ajax())
   if request.method == 'GET':
     form = BudgetForm()
     return render(request, 'main_app/budget_form.html', {
@@ -175,20 +174,16 @@ def budget_index(request):
 
 @login_required
 def share_budget(request, shared_url):
-  print(shared_url)
   budget = Budget.objects.get(shared_url = shared_url)
   return render(request, 'main_app/share_budget.html', {'budget': budget})
 
-
 @login_required
 def add_budget(request, shared_url):
-  print(request.user.id)
   Budget.objects.get(shared_url=shared_url).user.add(request.user.id)
   return redirect('/budget/')
 
 @login_required
 def budget_detail(request, budget_id):
-  print(f"{budget_id} HELLO")
   budget = Budget.objects.get(id=budget_id)
   if request.user not in budget.user.all():
     budgets = Budget.objects.filter(user=request.user)
