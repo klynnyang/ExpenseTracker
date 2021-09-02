@@ -15,8 +15,7 @@ import os
 import environ
 environ.Env()
 environ.Env.read_env()
-import django_heroku
-django_heroku.settings(locals())
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -183,3 +182,6 @@ EMAIL_HOST_PASSWORD = os.environ['SECRET_KEY']
 SITE_ID = 3
 LOGIN_REDIRECT_URL = '/budget/'
 LOGOUT_REDIRECT_URL = '/'
+
+import django_heroku
+django_heroku.settings(locals())
