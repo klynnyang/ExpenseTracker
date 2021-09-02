@@ -73,8 +73,7 @@ six==1.15.0
 sqlparse==0.4.1
 ssh-import-id==5.11
 systemd-python==234
-ubuntu-advantage-tools==27.2
-ubuntu-drivers-common==0.0.0
+
 ufw==0.36
 unattended-upgrades==0.1
 urllib3==1.26.2
