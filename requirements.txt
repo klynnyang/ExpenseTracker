@@ -32,7 +32,7 @@ idna==2.10
 jeepney==0.6.0
 jmespath==0.10.0
 keyring==22.2.0
-language-selector==0.1
+
 launchpadlib==1.10.13
 lazr.restfulclient==0.14.2
 lazr.uri==1.0.5
