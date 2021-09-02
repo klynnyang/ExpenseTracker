@@ -145,11 +145,22 @@ def user(request):
   return render(request, 'user.html')
 
 @login_required
+def share_budget(request, shared_url):
+  budget = Budget.objects.get(shared_url = shared_url)
+  form = EmailForm()
+  return render(request, 'main_app/share_budget.html', {
+    'budget': budget,
+    'form': form
+  })
+
+@login_required
 def send_email(request):
   messageSent = False
   if request.method == 'POST':
     form = EmailForm(request.POST)
     if form.is_valid():
+      print(form)
+      print("formisvalid")
       subject = 'You got an invite!'
       message = 'Hello'
       email_from = settings.EMAIL_HOST_USER
@@ -158,7 +169,7 @@ def send_email(request):
             'email.html',
             {
                 'user_name': form.cleaned_data['recipient'],
-                'subject':  'You got an invite from ___ to join Expense Tracker!',
+                'message':  'You got an invite from ___ to join Expense Tracker! Link: ',
             }
         )
       send_mail(subject, message, email_from, recipient_list, fail_silently=True, html_message=html_message)
@@ -171,11 +182,6 @@ def send_email(request):
 def budget_index(request):
   budgets = Budget.objects.filter(user=request.user)
   return render(request, 'budget/index.html', {'budgets': budgets})
-
-@login_required
-def share_budget(request, shared_url):
-  budget = Budget.objects.get(shared_url = shared_url)
-  return render(request, 'main_app/share_budget.html', {'budget': budget})
 
 @login_required
 def add_budget(request, shared_url):
