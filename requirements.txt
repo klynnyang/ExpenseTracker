@@ -47,7 +47,7 @@ psycopg2==2.9.1
 psycopg2-binary==2.9.1
 pycairo==1.16.2
 pycryptodomex==3.9.7
-pycups==2.0.1
+
 Pygments==2.7.1
 
 PyJWT==1.7.1
