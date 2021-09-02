@@ -1,0 +1,15 @@
+
+<div class="container" >
+    <h1 class="text-center">{{user|title}}'s {{budget.name}} Budget</h1>
+    Share link: <input id="share-link" type="text" size="40" class="mt-3"value="{{request.META.HTTP_HOST}}/budget/share/{{budget.shared_url}}">
+    <p class="text-center"><button onclick="copyFunction()" class="btn btn-success mt-4">Copy the link</button></p>
+</div>
+
+<script>
+    function copyFunction() {
+        var copyText = document.getElementById("share-link");
+        copyText.select()
+        copyText.setSelectionRange(0, 9999);
+        navigator.clipboard.writeText(copyText.value);
+    }
+</script>

@@ -57,7 +57,7 @@ Expense Tracker - Purchase History
                 $("#table-detail tbody").empty()
                 data.data.forEach(function(purchase){
                     $("#table-detail tbody").append(
-                    '<tr><td>' + purchase.username + 
+                    '<tr><td>' + purchase.username[0].toUpperCase() + purchase.username.slice(1) + 
                     '</td><td>' + purchase.date +
                     '</td><td>' + purchase.amount +
                     '</td><td>' + purchase.categoryname +

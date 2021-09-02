@@ -11,11 +11,14 @@ Expense Tracker - {{ budget.name }}
     <input type="submit" class="btn btn-success mt-3" value="< Back to Budgets" />
   </form>
 
-  <form action="#" >
-    <input type="submit" class="btn btn-success mt-3" value="Share the Budget" />
-  </form>
+  <button id="share" class="btn btn-success mt-3" type="button" >Share the Budget</button>
 </div>
 
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
 
 <div class='container'>
   <div class='detail col-sm-12 py-2'>
@@ -33,7 +36,7 @@ Expense Tracker - {{ budget.name }}
 </div>
 
 <div class="row">
-  <div class='col-sm-6 mt-2'>
+  <div class='col-sm-6 mt-2 chart-canvas'>
     <i class="fas fa-chart-pie"></i><b>&nbsp Pie Chart</b>
     <canvas id="pie-chart" data-url="{% url 'table' budget.id test%}"></canvas>
 
@@ -58,11 +61,18 @@ Expense Tracker - {{ budget.name }}
     </div>
   </div>
 
-
 <script>
+
+$(document).ready(function() {      
+  $("#share").modalForm({
+    formURL: "{% url 'share_budget' budget.shared_url%}",
+    });      
+});
 
 $("#id_month").change(function(){
   let month = $('#id_month').val();
+  $("#pie-chart").remove();
+  $('.chart-canvas').append('<canvas id="pie-chart"><canvas>');
   renderChart(month);
   renderTable(month)
 });
@@ -89,8 +99,9 @@ function renderTable(month) {
           '</td></tr>' 
         )
       })
+
       let ctx = $pieChart[0].getContext("2d");
-      new Chart(ctx, {
+      myChart = new Chart(ctx, {
         type: 'pie',
         data: {
           labels: data.labels,
@@ -109,7 +120,6 @@ function renderTable(month) {
             position: 'bottom'
           }
         }
-
       })
     }
   })

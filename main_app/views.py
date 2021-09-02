@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template import loader
+from django.shortcuts import redirect
 from django.urls.base import reverse_lazy
 from .forms import EmailForm, MonthForm, BudgetForm, PurchaseForm, SignUpForm
 from django.http import JsonResponse
@@ -58,19 +59,6 @@ def budget_submit(request):
     new_budget.save()
   return redirect('budget')
 
-# class BudgetCreate(LoginRequiredMixin, BSModalCreateView):
-#   template_name ='main_app/budget_form.html'
-#   form_class = BudgetForm
-#   success_url = '/budget/'
-#   def form_valid(self, form):
-#     form.instance.user.set(self.request.user)
-#     return super().form_valid(form)
-
-@login_required
-def add_budget(request, budget_id, user_id):
-  Budget.objects.get(id=budget_id).user.add(user_id)
-  return redirect('/budget/')
-
 # def purchaseCreate(request):
 #   error_message = ''
 #   if request.method == 'POST':
@@ -84,10 +72,11 @@ def add_budget(request, budget_id, user_id):
 def chart(request, budget_id, month_id):
   labels = []
   data = []
-  queryset = Purchase.objects.filter(budget=budget_id).filter(date__month=month_id).order_by('date')
-  for entry in queryset:
-    labels.append(entry.date)
-    data.append(entry.amount)
+  queryset = Purchase.objects.filter(budget=budget_id).filter(date__month=month_id)
+  new_query = list(queryset.values('date').annotate(total=Sum('amount')).order_by('date'))
+  for entry in new_query:
+    labels.append(entry["date"])
+    data.append(entry["total"])
          
   return JsonResponse (data={
     'labels': labels,
@@ -100,13 +89,12 @@ def table(request, budget_id, month_id):
   labels = []
   chart_data = []
   queryset = Purchase.objects.filter(budget=budget_id).filter(date__month=month_id)
-  total = queryset.values('category__name').annotate(total=Sum('amount'))
-  total_list = list(total)
+  total = list(queryset.values('category__name').annotate(total=Sum('amount')))
   for entry in total:
     labels.append(entry["category__name"])
     chart_data.append(entry["total"])
   return JsonResponse(data={
-    'data': total_list, 
+    'data': total, 
     'id': budget_id,
     'labels': labels,
     'chart': chart_data
@@ -186,7 +174,21 @@ def budget_index(request):
   return render(request, 'budget/index.html', {'budgets': budgets})
 
 @login_required
+def share_budget(request, shared_url):
+  print(shared_url)
+  budget = Budget.objects.get(shared_url = shared_url)
+  return render(request, 'main_app/share_budget.html', {'budget': budget})
+
+
+@login_required
+def add_budget(request, shared_url):
+  print(request.user.id)
+  Budget.objects.get(shared_url=shared_url).user.add(request.user.id)
+  return redirect('/budget/')
+
+@login_required
 def budget_detail(request, budget_id):
+  print(f"{budget_id} HELLO")
   budget = Budget.objects.get(id=budget_id)
   if request.user not in budget.user.all():
     budgets = Budget.objects.filter(user=request.user)
@@ -202,6 +204,5 @@ def table_detail(request, budget_id):
   month = MonthForm()
   test = datetime.now().month
   budget = Budget.objects.get(id=budget_id)
-  data = Purchase.objects.filter(budget=budget_id).filter(date__month=datetime.now().month)
-  return render(request, 'budget/table_detail.html', {'budget': budget, 'data': data, 'month':month, 'test':test})
+  return render(request, 'budget/table_detail.html', {'budget': budget, 'month':month, 'test':test})
 

@@ -8,7 +8,7 @@ urlpatterns = [
     path('email/', views.send_email, name='email'),
     path('budget/', views.budget_index, name='budget'),
     path('budget/create', views.budget_create, name='budget_create'),
-    path('budget/<int:budget_id>/user/<int:user_id>', views.add_budget, name='add_user_to_budget'),
+    path('budget/share/<str:shared_url>/', views.add_budget, name='add_user_to_budget'),
     path('budget/<int:budget_id>/charts/<int:month_id>', views.chart, name='chart'), 
     path('budget/<int:budget_id>/tables/<int:month_id>', views.table, name='table'),
     path('budget/<int:budget_id>/', views.budget_detail, name='detail'),
@@ -17,4 +17,5 @@ urlpatterns = [
     path('budget/<int:budget_id>/create', views.PurchaseCreate.as_view(), name='purchase_create'),
     path('purchase/<int:pk>/delete', views.PurchaseDelete.as_view(), name='purchase_delete'),
     path('purchase/<int:pk>/update', views.PurchaseUpdate.as_view(), name='purchase_update'),
+    path('budget/share_link/<str:shared_url>', views.share_budget, name='share_budget'),
 ]
