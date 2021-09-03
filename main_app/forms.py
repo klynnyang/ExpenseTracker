@@ -9,6 +9,7 @@ from bootstrap_modal_forms.forms import BSModalModelForm
 
 class EmailForm(forms.Form):
     recipient = forms.EmailField()
+    share_url = forms.CharField()
 
 class MonthForm(ModelForm):
     class Meta:
