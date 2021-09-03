@@ -79,6 +79,7 @@ $(document).ready(function() {
     formURL: "{% url 'share_budget' budget.shared_url%}",
     });      
 });
+$("#share").css('max-width', '130px')
 
 $("#id_month").change(function(){
   let month = $('#id_month').val();

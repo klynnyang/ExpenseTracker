@@ -13,8 +13,6 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime
-from bootstrap_modal_forms.generic import BSModalCreateView
-
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -146,11 +144,11 @@ def share_budget(request, shared_url):
 
 @login_required
 def send_email(request):
-  messageSent = False
-  if request.method == 'POST':
+  budgets = Budget.objects.filter(user=request.user)
+  if request.method == 'POST' and not request.is_ajax():
     form = EmailForm(request.POST)
     if form.is_valid():
-      print(form.cleaned_data['share_url'])
+      shared_url = form.cleaned_data['share_url'].split("share/", 1)[-1]
       subject = 'You got an invite!'
       message = 'Hello'
       email_from = settings.EMAIL_HOST_USER
@@ -164,10 +162,7 @@ def send_email(request):
             }
         )
       send_mail(subject, message, email_from, recipient_list, fail_silently=True, html_message=html_message)
-      messageSent = True
-  else:
-    form = EmailForm()
-  return render(request, 'index.html', {'form': form, 'messageSent':messageSent})
+  return render(request, 'budget/index.html', {'budgets': budgets})
 
 @login_required
 def budget_index(request):

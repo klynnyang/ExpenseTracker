@@ -28,9 +28,6 @@
     {% endif %}
 </div>
 
-
-
-
 <script>
     function copyFunction() {
         var copyText = document.getElementById("share-link");
@@ -43,4 +40,6 @@
     })
     $('input[name="share_url"]').attr("value", "{{request.META.HTTP_HOST}}/budget/share/{{budget.shared_url}}").hide()
     $('label').last().hide()
+    $(':input').not(":eq(3), :eq(7)").addClass("form-control")
+    $('input[name="recipient"]').attr("placeholder", "example@email.com")
 </script>
