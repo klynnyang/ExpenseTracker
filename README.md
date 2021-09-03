@@ -34,3 +34,7 @@ The Trello board can be accessed <a href="https://trello.com/b/PzjYRlt0/project-
 <h2><b>Next Steps</b></h3>
 <li>Optimize the application for mobile compatibility</li>
 <li>Create prediction models based on user spending habits</li>
+<li>Additional summaries, by user, retailers</li>
+<li>User specified retailers and categories</li>
+<li>Allowing user to specify account a purchase is paid from</li>
+
