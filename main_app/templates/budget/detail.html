@@ -52,7 +52,7 @@ Expense Tracker - {{ budget.name }}
   <div class='col-sm-6 mt-2'>
     <div id="summary-title">
       <span><i class="fas fa-table"></i><b>&nbsp Purchase Summary</b></span>
-      <a href="{% url 'table_detail' budget.id%}"><button class="float-right btn btn-success mt-3">Edit Purchases</button></a>
+      <a href="{% url 'table_detail' budget.id%}"><button id="edit-purchases" class="float-right btn btn-success mt-3">Edit Purchases</button></a>
     </div>
     <div id="table" data-url="{% url 'table' budget.id test%}">
       <table class="table table-striped">

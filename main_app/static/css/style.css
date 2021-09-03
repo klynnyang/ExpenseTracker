@@ -82,3 +82,7 @@ a:link {
     justify-content: space-between;
     align-items: center;
 }
+
+#edit-purchases {
+    margin-bottom: 16px;
+}
