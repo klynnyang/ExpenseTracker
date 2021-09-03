@@ -58,15 +58,6 @@ def budget_submit(request):
     new_budget.save()
   return redirect('budget')
 
-# def purchaseCreate(request):
-#   error_message = ''
-#   if request.method == 'POST':
-
-
-
-#     form = PurchaseForm(request.POST)
-#     if form.is_valid():
-
 @login_required
 def chart(request, budget_id, month_id):
   labels = []
@@ -159,8 +150,7 @@ def send_email(request):
   if request.method == 'POST':
     form = EmailForm(request.POST)
     if form.is_valid():
-      print(form)
-      print("formisvalid")
+      print(form.cleaned_data['share_url'])
       subject = 'You got an invite!'
       message = 'Hello'
       email_from = settings.EMAIL_HOST_USER
@@ -169,7 +159,8 @@ def send_email(request):
             'email.html',
             {
                 'user_name': form.cleaned_data['recipient'],
-                'message':  'You got an invite from ___ to join Expense Tracker! Link: ',
+                'url': form.cleaned_data['share_url'],
+                'subject':  'You got an invitation to join Expense Tracker!',
             }
         )
       send_mail(subject, message, email_from, recipient_list, fail_silently=True, html_message=html_message)
@@ -182,6 +173,12 @@ def send_email(request):
 def budget_index(request):
   budgets = Budget.objects.filter(user=request.user)
   return render(request, 'budget/index.html', {'budgets': budgets})
+
+@login_required
+def share_budget(request, shared_url):
+  form = EmailForm()
+  budget = Budget.objects.get(shared_url = shared_url)
+  return render(request, 'main_app/share_budget.html', {'budget': budget, 'form': form})
 
 @login_required
 def add_budget(request, shared_url):

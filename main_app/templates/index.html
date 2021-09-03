@@ -14,30 +14,30 @@ Expense Tracker - Home
 </div>
 <div class="jumbotron">
     <p>About us</p>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error doloribus, dicta accusantium non odio adipisci tempore nisi officiis temporibus ullam quibusdam, ex cupiditate. Eligendi praesentium natus facilis dolores veniam facere?</p>
+    <p>Expense-O-Track is an easy-to-use expense tracking tools for individuals and families alike. Easily view your purchase history and summary by month and categories.</p>
 </div>
 
 <!-- <div class="container">
-  <h3><strong>Invite Someone</strong></h3>
-  {% if messageSent%}
-  <div class="container">
-      <h3><strong>Success!</strong></h3>
-      <p>Invitation was sent to {{ form.cleaned_data.recipient }}</p>
-    </div>
-  {% else %}
-  <form action="{% url 'email'%}" method="post">
-    {% csrf_token %} {{ form.as_p }}
-    <div class="text-center">
-      <input
-        type="submit"
-        class="btn btn-success"
-        style="width: 100%"
-        value="Send e-mail"
-      />
-    </div>
-  </form> -->
-  {% endif %}
-</div>
+    <h3><strong>Invite Someone</strong></h3>
+    {% if messageSent%}
+    <div class="container">
+        <h3><strong>Success!</strong></h3>
+        <p>Invitation was sent to {{ form.cleaned_data.recipient }}</p>
+      </div>
+    {% else %}
+    <form action="{% url 'email'%}" method="post">
+      {% csrf_token %} {{ form.as_p }}
+      <div class="text-center">
+        <input
+          type="submit"
+          class="btn btn-success"
+          style="width: 100%"
+          value="Send e-mail"
+        />
+      </div>
+    </form>
+    {% endif %}
+  </div> -->
 {% endblock %}
 
 
